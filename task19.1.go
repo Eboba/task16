@@ -8,11 +8,21 @@ import (
 
 func merger(massif [4]int, massifTwo [5]int) (massifThree [9]int) {
 
-	for i, _ := range massifThree { // цикл объединяет два массива
-		if i < len(massif) {
-			massifThree[i] = massif[i]
+	var a, b int
+
+	for i, _ := range massifThree {
+		if a == len(massif) { // первые два условия проверяют, чтоб не один из массивов не закончился
+			massifThree[i] = massifTwo[b]
+			b++
+		} else if b == len(massifTwo) {
+			massifThree[i] = massif[a]
+			a++
+		} else if massif[a] < massifTwo[b] { // следующие два условия проверяют, какой элемент положить в данный момент
+			massifThree[i] = massif[a]
+			a++
 		} else {
-			massifThree[i] = massifTwo[i-4]
+			massifThree[i] = massifTwo[b]
+			b++
 		}
 	}
 
@@ -41,7 +51,6 @@ func main() {
 
 	for { //Сортировка перемешиванием (англ. Cocktail sort).
 		f := 0
-		fmt.Println(num)
 		for j := 0; j < len(num)-1; j++ {
 			if num[j] > num[j+1] {
 				f = 1
@@ -53,16 +62,12 @@ func main() {
 		for i := forward; i < back; i++ {
 			if num[i] > num[i+1] {
 				num[i], num[i+1] = num[i+1], num[i]
-				fmt.Println(num)
 			}
-
 		}
 		forward++
-
 		for i := back; i > forward-1; i-- {
 			if num[i-1] > num[i] {
 				num[i], num[i-1] = num[i-1], num[i]
-				fmt.Println(num)
 			}
 		}
 		back--
@@ -70,7 +75,7 @@ func main() {
 
 	rand.Seed(time.Now().UnixNano())
 
-	for { //  Bogosort (также глупая сортировка, stupid sort), кстать хотел задачу со скобками через рандом сделать, но не стал =)
+	for { //  Bogosort (также глупая сортировка, stupid sort)
 		f := 0
 		for j := 0; j < len(numTwo)-1; j++ {
 			if numTwo[j] > numTwo[j+1] {
@@ -85,6 +90,5 @@ func main() {
 			numTwo[i], numTwo[z] = numTwo[z], numTwo[i]
 		}
 	}
-
 	fmt.Println(merger(num, numTwo))
 }
